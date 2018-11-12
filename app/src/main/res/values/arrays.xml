@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="listArray">
+        <item>theme 1</item>
+        <item>theme 2</item>
+        <item>theme 3</item>
+    </string-array>
+
+    <string-array name="listValues">
+        <item>AppTheme</item>
+        <item>AppTheme2</item>
+        <item>AppTheme3</item>
+    </string-array>
+</resources>

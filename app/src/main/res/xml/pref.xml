@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceScreen
+        android:key="stiles"
+        android:persistent="false"
+        android:title="@string/stiles">
+        <ListPreference
+            android:defaultValue="AppTheme"
+            android:entries="@array/listArray"
+            android:entryValues="@array/listValues"
+            android:key="themes"
+            android:title="themes" />
+    </PreferenceScreen>
+
+</PreferenceScreen>
