@@ -1,14 +1,22 @@
 package com.example.kolys.musicalplayer;
 
-import android.preference.PreferenceActivity;
 import android.os.Bundle;
+import android.support.v7.preference.PreferenceFragmentCompat;
 
-public class Settings extends PreferenceActivity {
+public class Settings extends PreferenceFragmentCompat {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.pref);
+    public void onCreatePreferences(Bundle bundle, String s) {
+        setPreferencesFromResource(R.xml.pref, s);
+    }
+
+    public static Settings newInstance() {
+        
+        Bundle args = new Bundle();
+        
+        Settings fragment = new Settings();
+        fragment.setArguments(args);
+        return fragment;
     }
 
 }

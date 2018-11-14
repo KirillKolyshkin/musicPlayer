@@ -9,23 +9,24 @@ import android.net.Uri;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.io.File;
 
-public class SongDetailsActivity extends AppCompatActivity implements View.OnClickListener {
+public class SongDetailsActivity extends AppCompatActivity implements View.OnClickListener, ServiceConnection {
 
     TextView tv_song_name;
     ImageButton ib_pause;
     ImageButton ib_next;
     ImageButton ib_previous;
-    int songId;
     private MediaPlayerService musicSrv = MediaPlayerService.getInstance();
-    private Intent playIntent;
     boolean musicBound = false;
     boolean flag = true;
+    int songId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,14 +42,11 @@ public class SongDetailsActivity extends AppCompatActivity implements View.OnCli
             tv_song_name.setText(intent.getStringExtra("SongName"));
             songId = intent.getIntExtra("SongId", 1);
         }
-        //File newFile = new File();
 
         ib_pause.setOnClickListener(this);
         ib_previous.setOnClickListener(this);
         ib_next.setOnClickListener(this);
     }
-
-    ServiceConnection musicConnection = new ServiceConnection() {
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -62,22 +60,11 @@ public class SongDetailsActivity extends AppCompatActivity implements View.OnCli
             musicBound = false;
         }
 
-        @Override
-        public void onBindingDied(ComponentName name) {
-
-        }
-
-        @Override
-        public void onNullBinding(ComponentName name) {
-
-        }
-    };
-
     @Override
     protected void onStart() {
         super.onStart();
         Intent intent = new Intent(this, MediaPlayerService.class);
-        bindService(intent, musicConnection, Context.BIND_AUTO_CREATE);
+        bindService(intent, this, Context.BIND_AUTO_CREATE);
 
     }
 
@@ -85,7 +72,7 @@ public class SongDetailsActivity extends AppCompatActivity implements View.OnCli
     protected void onStop() {
         super.onStop();
         if (musicBound) {
-            unbindService(musicConnection);
+            unbindService(this);
             musicBound = false;
         }
     }
@@ -95,10 +82,10 @@ public class SongDetailsActivity extends AppCompatActivity implements View.OnCli
         switch (v.getId()) {
             case R.id.ib_pause:
                 if (flag) {
-                    musicSrv.pauseMusic();
+                    musicSrv.play();
                     ib_pause.setImageResource(R.drawable.ic_play);
                 } else {
-                    musicSrv.unPauseMusic();
+                    musicSrv.play();
                     ib_pause.setImageResource(R.drawable.ic_pause);
                 }
                 flag = !flag;
@@ -122,6 +109,3 @@ public class SongDetailsActivity extends AppCompatActivity implements View.OnCli
         }
     }
 }
-
-
-
