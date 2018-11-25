@@ -12,7 +12,7 @@ import android.os.PowerManager
 import java.util.ArrayList
 
 class MediaPlayerService : Service(), MediaPlayer.OnPreparedListener {
-    private lateinit var player : MediaPlayer
+    private lateinit var player: MediaPlayer
     private lateinit var songs: ArrayList<Song>
     private var songPosn: Int = 0
     private val musicBind = MusicalBinder()
@@ -47,19 +47,22 @@ class MediaPlayerService : Service(), MediaPlayer.OnPreparedListener {
     }
 
     fun getNext() {
-        if (songPosn < songs.size - 1)
+        if (songPosn < songs.size - 1) {
             songPosn++
-        else
+        } // у нас в C# это ок, соре не нзал
+        else {
             songPosn = 0
+        }
         stop()
         playSong()
     }
 
     fun getPrevious() {
-        if (songPosn == 0)
+        if (songPosn == 0) {
             songPosn = songs.size - 1
-        else
+        } else {
             songPosn--
+        }
         stop()
         playSong()
     }

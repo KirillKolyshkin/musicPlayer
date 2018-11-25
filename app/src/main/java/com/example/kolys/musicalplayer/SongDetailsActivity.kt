@@ -15,15 +15,12 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
+import kotlinx.android.synthetic.main.activity_song_details.*
 
 import java.io.File
 
 class SongDetailsActivity : AppCompatActivity(), View.OnClickListener, ServiceConnection {
 
-    private lateinit var tv_song_name: TextView
-    private lateinit var ib_pause: ImageButton
-    private lateinit var ib_next: ImageButton
-    private lateinit var ib_previous: ImageButton
     private var musicSrv : MediaPlayerService? = null
     private var musicBound = false
     private var flag = true
@@ -32,10 +29,6 @@ class SongDetailsActivity : AppCompatActivity(), View.OnClickListener, ServiceCo
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_song_details)
-        tv_song_name = findViewById(R.id.tv_song_name)
-        ib_pause = findViewById(R.id.ib_pause)
-        ib_next = findViewById(R.id.ib_next)
-        ib_previous = findViewById(R.id.ib_previous)
 
         val intent = intent
         if (intent != null) {
@@ -62,7 +55,6 @@ class SongDetailsActivity : AppCompatActivity(), View.OnClickListener, ServiceCo
         super.onStart()
         val intent = Intent(this, MediaPlayerService::class.java)
         bindService(intent, this, Context.BIND_AUTO_CREATE)
-
     }
 
     override fun onStop() {

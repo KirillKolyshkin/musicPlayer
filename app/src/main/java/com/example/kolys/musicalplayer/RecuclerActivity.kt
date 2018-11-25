@@ -11,8 +11,6 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.FrameLayout
@@ -22,7 +20,6 @@ import com.example.kolys.musicalplayer.RecyclerView.SongsAdapter
 import java.util.ArrayList
 
 class RecuclerActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener, ServiceConnection, MyCallBack {
-
 
     lateinit var recyclerView: RecyclerView
     private val songs = ArrayList<Song>()
@@ -41,9 +38,11 @@ class RecuclerActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
         val manager = LinearLayoutManager(this)
         val onClick = object : MyCallBack {
             override fun onItemClick(position: Int) {
-                musicSrv?.stop()
-                musicSrv?.setSong(position)
-                musicSrv?.playSong()
+                musicSrv?.let {
+                    it.stop()
+                    it.setSong(position)
+                    it.playSong()
+                }
                 val intent = Intent(this@RecuclerActivity, SongDetailsActivity::class.java)
                 intent.putExtra("SongName", songs[position].songName)
                 intent.putExtra("SongId", songs[position].songId)
@@ -58,7 +57,7 @@ class RecuclerActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
         val prefBtn = findViewById<Button>(R.id.btn_settings)
         supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.fl_settings, Settings.newInstance())
+                .replace(R.id.fl_settings, SettingsFragment.newInstance())
                 .commit()
         val container = findViewById<FrameLayout>(R.id.container)
         val settings = findViewById<FrameLayout>(R.id.fl_settings)
@@ -74,7 +73,6 @@ class RecuclerActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
         }
     }
 
-
     override fun onServiceConnected(name: ComponentName, service: IBinder) {
         val binder = service as MediaPlayerService.MusicalBinder
         musicSrv = binder.service
@@ -86,7 +84,6 @@ class RecuclerActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
     override fun onServiceDisconnected(name: ComponentName) {
         musicBound = false
     }
-
 
     override fun onStart() {
         super.onStart()
